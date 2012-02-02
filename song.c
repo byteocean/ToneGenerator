@@ -1,45 +1,49 @@
 #include "song.h"
 
-PTone create_tone(Tone *song,int toneID,int key){
-	PTone tone;
-	//tone=(PTone)malloc(sizeof(Tone)); 
-	//malloc is not supported,there is error 'undefined __outchar'
-	//and 'undefined __tstchar'
-	tone -> nextTone = NULL;
-	tone -> pitch = *(
-			brotherJohn->pitchSet+
-			(*(brotherJohn->brotherJohnPitch+toneID)+10+key)
-			);
-			
-	tone -> length = *(
-			brotherJohn->lengthSet+
-			(*(brotherJohn->brotherJohnLength+toneID)+10+key)
-			);
 
-	return tone;
+
+void add_tone(Tone *song,PTone tone){
+	PTone prevTone = NULL;
+	PTone thisTone = song;
 	
-} //private function
-
-void load_tone(Tone *song,int key){
-	int i=0;
-	PTone prevTone = song;
-	for (i;i<SONG_LENGTH;i++){
-		PTone newTone;// = (PTone)malloc(sizeof(Tone));
-		newTone = create_tone(song,i,key);
-		
-		if(prevTone == NULL){
-			song = newTone;
-		}else{
-			prevTone -> nextTone = newTone;
-			prevTone = newTone;		
-		}
-		
+	while(thisTone){
+		prevTone = thisTone;
+		thisTone =  thisTone->nextTone;
+	}
+	
+	if(prevTone == NULL){
+		song = tone;
+	}else{
+		prevTone->nextTone = tone;
 	}
 
-	prevTone -> nextTone = song; //create a circular lists
+}  //private function
 
-}   //public function
 
+void load_tone(Tone *song,int key){
+	int toneID=0;
+	PTone currentTone;
+	for(toneID;toneID<SONG_LENGTH;toneID++){
+		//create every tone element
+		currentTone = &toneContainer[toneID]; 
+		//compiler cannot understand 'toneContainer+offset'
+		currentTone -> nextTone = NULL;
+		currentTone -> pitch = *(
+				brotherJohn->pitchSet+
+				(*(brotherJohn->brotherJohnPitch+toneID)+10+key)
+				);
+			
+		currentTone -> length = *(
+				brotherJohn->lengthSet+
+				(*(brotherJohn->brotherJohnLength+toneID)+10)
+				);
+		//insert tone element into song
+		add_tone(song,currentTone);
+	}
+	
+	currentTone -> nextTone = song; //create a circular list
+
+}  //public function
 
 
 

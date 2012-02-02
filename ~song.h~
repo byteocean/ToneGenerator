@@ -28,7 +28,6 @@
 						   
 #define SONG_LENGTH 31
 
-//private class
 typedef struct{
   int pitchSet[25];  
   int lengthSet[3]; 
@@ -36,20 +35,16 @@ typedef struct{
   int brotherJohnLength[SONG_LENGTH];
 }SongInfo,*PSongInfo;
 
-//private variable
 SongInfo thissong = {INIT_PITCHSET,INIT_LENGTHSET,
 			INIT_BROTHERJOHN_PITCH,
 			INIT_BROTHERJOHN_LENGTH};
-PSongInfo  brotherJohn=&thissong;
-
+PSongInfo  brotherJohn = &thissong;
 
 typedef struct{ 
 	struct Tone *nextTone;
 	int pitch;
 	int length;	
 } Tone,*PTone;
-
-Tone toneContainer[SONG_LENGTH];
 
 #define LOAD_TONE(song,key)       SYNC(song,load_tone,key)
 #define POP_TONE(song,preTone)        SYNC(song,pop_tone,preTone)
