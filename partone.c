@@ -6,8 +6,6 @@
 #include <machine/hcs12.h>
 
 #define DATA_OUT 0xFF //write to PortP's DDRP to set PortP as output
-//#define BACKGROUND_LOOP_RANGE 150
-int loopRange = 0;
 
 typedef struct{
 	Object super;
@@ -81,9 +79,10 @@ void multiply(Multiplier *self,int unused){
 //kick off two tasks: background task and tone generator
 typedef struct{
 	Object object;
+	int loopRange;
 } StartApp;
 
-StartApp app = {initObject()};
+StartApp app = {initObject(),0};
 
 void reader(StartApp*, int);
 void receiver(StartApp*, int);
@@ -104,10 +103,10 @@ void reader(StartApp *self, int c) {
     SCI_WRITECHAR(&sci0, c);
     SCI_WRITE(&sci0, "\'\n");
     if(c=='i'){
-	loopRange += 50;
+	app.loopRange += 50;
     }else if(c=='d'){
-	if (loopRange > 0){
-		loopRange -=50;
+	if (app.loopRange > 0){
+		app.loopRange -=50;
 	}
     }
 }
