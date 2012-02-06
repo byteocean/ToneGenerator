@@ -1,0 +1,13 @@
+parallelportTinyTimber.c & parallelportTinyTimber.h is class for controlling the parallel port
+
+toneReader.h & toneReader.c is class for generating tone,which contains self-loop to change the out-put of portP.
+It also provides interface to change the frequency of tone.
+
+instrumentInfo.h includes the basic information about the sets of pitch/length.
+
+song.h & song.c is class to load a song as linked list and is able to pop tones one by one.
+
+toneReader.h.toneReader.c is class to set/maintain the state and key variables for music player.
+
+partone.c is the music player,which periodically sets the frequency of tone and provides interface to set the offset,
+'key',using keyboard.

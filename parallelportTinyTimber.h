@@ -1,18 +1,18 @@
 #ifndef PARALLEL_PORT_TINYT_H
 #define PARALLEL_PORT_TINYT_H
 
+#include "TinyTimber.h"
 #include <machine/hcs12.h>
 #include <machine/hcs12/pim.h>
 
 typedef struct{
 	Object super;
 	PPIM devicePort;
-	Object *obj;
+	//Object *obj;
 	//Method *meth;   is it necessary here? no? 
 } ParallelPort;
 
-#define initParallelPort(port,obj) \
-       {initObject(),port,(Object*)obj};
+#define initParallelPort(port)  {initObject(),port};
 	   
 #define PORT (PPIM)(PTT)  //PTT=0x0240;
 

@@ -1,8 +1,14 @@
 #include "song.h"
 
 
+//private variable
+SongInfo thissong = {INIT_BROTHERJOHN_PITCH,INIT_BROTHERJOHN_LENGTH};
+PSongInfo  brotherJohn=&thissong;
 
-void add_tone(Tone *song,PTone tone){
+
+Tone toneContainer[SONG_LENGTH];
+
+void add_tone(Tone *song,PTone newTone){
 	PTone prevTone = NULL;
 	PTone thisTone = song;
 	
@@ -12,51 +18,42 @@ void add_tone(Tone *song,PTone tone){
 	}
 	
 	if(prevTone == NULL){
-		song = tone;
+		song = newTone;
 	}else{
-		prevTone->nextTone = tone;
+		prevTone->nextTone = newTone;
 	}
 
 }  //private function
 
 
-void load_tone(Tone *song,int key){
+void load_tone(Tone *song,int unused){
 	int toneID=0;
-	PTone currentTone;
+	PTone newTone;
 	for(toneID;toneID<SONG_LENGTH;toneID++){
 		//create every tone element
-		currentTone = &toneContainer[toneID]; 
+		newTone = &toneContainer[toneID]; 
 		//compiler cannot understand 'toneContainer+offset'
-		currentTone -> nextTone = NULL;
-		currentTone -> pitch = *(
-				brotherJohn->pitchSet+
-				(*(brotherJohn->brotherJohnPitch+toneID)+10+key)
-				);
-			
-		currentTone -> length = *(
-				brotherJohn->lengthSet+
-				(*(brotherJohn->brotherJohnLength+toneID)+10)
-				);
+		newTone -> nextTone = NULL;
+		newTone -> pitchID = *(brotherJohn->brotherJohnPitch+toneID);
+		newTone -> lengthID = *(brotherJohn->brotherJohnLength+toneID);
 		//insert tone element into song
-		add_tone(song,currentTone);
+		add_tone(song,newTone);
 	}
 	
-	currentTone -> nextTone = song; //create a circular list
+	newTone -> nextTone = song; //create a circular list
 
 }  //public function
 
-
-
-PTone display_tone(Tone *song,PTone preTone){
+Tone *pop_next_tone(Tone *song,Tone *preTone){
 	if(preTone==NULL){
 		return song;
 	}else{
-		PTone pre =(PTone)preTone;
+		Tone *pre;
+		pre = (Tone *)preTone;
 		return pre -> nextTone;
 	}
 
-}
-  //public function
+} //public function
 
 
 
